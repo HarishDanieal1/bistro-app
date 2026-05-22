@@ -136,6 +136,21 @@ app.post('/api/auth/login', async (req, res) => {
   }
 });
 
+// Welcome Route
+app.get('/', (req, res) => {
+  res.json({
+    status: 'online',
+    message: 'The Intelligent Bistro API is fully operational! 🍳✨',
+    version: '1.0.0',
+    endpoints: {
+      auth: ['/api/auth/login', '/api/auth/register'],
+      menu: '/api/menu',
+      orders: '/api/orders',
+      chat: '/api/chat'
+    }
+  });
+});
+
 // ==========================================
 // 2. MENU ROUTES (WITH ADMIN CRUD OPERATIONS)
 // ==========================================
