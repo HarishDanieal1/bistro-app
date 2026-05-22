@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "bistro-mobile",
+    "slug": "bistro-mobile",
+    "version": "1.0.0",
+    "platforms": ["ios", "android", "web"],
+    "plugins": [
+      "expo-asset"
+    ]
+  }
+}
