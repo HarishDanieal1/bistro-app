@@ -23,6 +23,7 @@ server/.env
 /db/prisma/migrations
 /db/node_modules/@prisma
 prisma-client
+/server/prisma/generated-client
 
 # OS
 .DS_Store
