@@ -132,7 +132,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ onOpenLogin, onRef
   const [formAvailable, setFormAvailable] = useState(true);
   const [submittingForm, setSubmittingForm] = useState(false);
 
-  const backendUrl = Platform.OS === 'android' ? 'http://10.0.2.2:5000' : 'http://localhost:5000';
+  const backendUrl = (process.env.EXPO_PUBLIC_API_URL || (Platform.OS === 'android' ? 'http://10.0.2.2:5000' : 'http://localhost:5000')).replace(/\/$/, '');
 
   // ==========================================
   // API DATA FETCHERS

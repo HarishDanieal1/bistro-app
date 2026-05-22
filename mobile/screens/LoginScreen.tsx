@@ -26,7 +26,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onClose }) => {
 
   const setCurrentUser = useUserStore((state) => state.setCurrentUser);
 
-  const backendUrl = Platform.OS === 'android' ? 'http://10.0.2.2:5000' : 'http://localhost:5000';
+  const backendUrl = (process.env.EXPO_PUBLIC_API_URL || (Platform.OS === 'android' ? 'http://10.0.2.2:5000' : 'http://localhost:5000')).replace(/\/$/, '');
 
   const handleAuth = async () => {
     if (!email || !password || (isRegisterMode && !name)) {

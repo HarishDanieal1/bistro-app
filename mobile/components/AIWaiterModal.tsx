@@ -283,7 +283,7 @@ export const AIWaiterModal: React.FC<AIWaiterModalProps> = ({
 
     try {
       // 2. Fetch from consolidated backend API
-      const backendUrl = Platform.OS === 'android' ? 'http://10.0.2.2:5000' : 'http://localhost:5000';
+      const backendUrl = (process.env.EXPO_PUBLIC_API_URL || (Platform.OS === 'android' ? 'http://10.0.2.2:5000' : 'http://localhost:5000')).replace(/\/$/, '');
       
       const response = await fetch(`${backendUrl}/api/chat`, {
         method: 'POST',

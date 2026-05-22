@@ -41,7 +41,7 @@ export const CartScreen: React.FC<CartScreenProps> = ({ onOrderSuccess, menuItem
   const clearCart = useCartStore((state) => state.clearCart);
   const addGuestOrder = useCartStore((state) => state.addGuestOrder);
 
-  const backendUrl = Platform.OS === 'android' ? 'http://10.0.2.2:5000' : 'http://localhost:5000';
+  const backendUrl = (process.env.EXPO_PUBLIC_API_URL || (Platform.OS === 'android' ? 'http://10.0.2.2:5000' : 'http://localhost:5000')).replace(/\/$/, '');
 
   // Cost calculations
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
