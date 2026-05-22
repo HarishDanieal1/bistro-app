@@ -15,6 +15,28 @@ app.use(cors());
 const client = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = client.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
+// Helper for Gemini queries with automatic retry on temporary 503 errors
+async function generateContentWithRetry(prompt, retries = 3, delay = 1000) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      return await model.generateContent(prompt);
+    } catch (err) {
+      console.warn(`Gemini attempt ${i + 1} failed:`, err.message);
+      const isTemporary = err.message.includes('503') || 
+                          err.message.includes('Service Unavailable') || 
+                          err.message.includes('high demand') ||
+                          err.message.includes('overloaded');
+      if (isTemporary && i < retries - 1) {
+        const waitTime = delay * Math.pow(2, i);
+        console.log(`Temporary Gemini error. Retrying in ${waitTime}ms...`);
+        await new Promise((resolve) => setTimeout(resolve, waitTime));
+        continue;
+      }
+      throw err;
+    }
+  }
+}
+
 // Fallback menu items in case database connection fails
 const fallbackMenu = [
   {
@@ -597,7 +619,7 @@ Output: { "action": "ADD", "items": [{ "menuItemId": "seeded-item-id-for-wagyu-b
 
     const fullPrompt = `${systemPrompt}\n\nCONVERSATION HISTORY:\n${contextHistory}Customer: ${message}\nOutput (strictly raw JSON):`;
 
-    const result = await model.generateContent(fullPrompt);
+    const result = await generateContentWithRetry(fullPrompt);
     const responseText = result.response.text().trim();
 
     // 5. Clean up any accidental markdown blocks that Gemini sometimes outputs
