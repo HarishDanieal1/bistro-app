@@ -97,7 +97,7 @@ npm install
 # Start Expo Web/Mobile server
 npm run web
 ```
-Open [http://localhost:8081](http://localhost:8081) to view the client dashboard.
+Open [Bistro_App](https://bistro-app-kk6l.vercel.app/) to view the client dashboard.
 
 ---
 
