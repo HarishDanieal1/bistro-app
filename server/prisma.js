@@ -1,19 +1,9 @@
 const { PrismaClient } = require('@prisma/client');
-const { PrismaPg } = require('@prisma/adapter-pg');
-const { Pool } = require('pg');
 
 const globalForPrisma = globalThis;
 
-let prisma;
+const prisma = globalForPrisma.prisma || new PrismaClient();
 
-if (!globalForPrisma.prisma) {
-  const connectionString = process.env.DATABASE_URL;
-  const pool = new Pool({ connectionString });
-  const adapter = new PrismaPg(pool);
-  prisma = new PrismaClient({ adapter });
-  globalForPrisma.prisma = prisma;
-} else {
-  prisma = globalForPrisma.prisma;
-}
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
 module.exports = { prisma };
